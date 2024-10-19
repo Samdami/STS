@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Checkout</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/cart">Cart</a>
+        </nav>
+    </header>
+
+    <section class="checkout-details">
+        <h2>Complete Your Payment</h2>
+        <p>Your total: $25,000</p>
+
+        <!-- Option 1: Coinbase Commerce Payment -->
+        <form action="/checkout" method="post">
+            <button type="submit" class="btn">Pay with Bitcoin (via Coinbase)</button>
+        </form>
+
+        <!-- Option 2: Manual Payment -->
+        <h3>Manual Bitcoin Payment</h3>
+        <p>Please send Bitcoin (BTC) to the address below:</p>
+        <div class="btc-address">
+            <p><strong>BTC Address:</strong> {{ btc_address }}</p>
+        </div>
+        <p>After sending the payment, please confirm by contacting us with the transaction details.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 SS7 Software</p>
+    </footer>
+</body>
+</html>

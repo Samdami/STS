@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Payment</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Complete Your Bitcoin Payment</h1>
+    </header>
+
+    <section class="payment-info">
+        <h2>To complete your order</h2>
+        <p>Don't close or refresh this page<br> This page will refresh after payment.
+        </p>
+        
+        <p>Send <strong id="btcAmount"></strong> BTC</p>
+        <p>To: <input type="text" value="{{ btc_address }}" id="btcAddress" readonly>
+            <button onclick="copyAddress()">Copy</button>
+            <p>Note btc network is :BTC(BITCOIN) </p>
+        </p>
+
+        <!-- Countdown Timer -->
+        <div class="countdown-timer">
+            <p>Awaiting payment (checked every 15 seconds)</p>
+            <div id="timer">02:00:00</div>
+        </div>
+
+        <!-- Wallet Open Button -->
+        <div class="wallet-button">
+            <a href="#" id="walletLink" class="btn" target="_blank">Open in Wallet</a>
+        </div>
+    </section>
+
+    <script>
+        // USD to BTC conversion rate (updated to 0.000015)
+        const usdToBtcRate = 0.000015;
+
+        // Function to get USD amount from order page
+        function getOrderAmount() {
+            // Retrieve the value from the URL
+            return parseFloat(new URLSearchParams(window.location.search).get('amount')) || 500;
+        }
+
+        // Update BTC amount on load
+        let usdAmount = getOrderAmount();
+        let btcAmount = (usdAmount * usdToBtcRate).toFixed(8);
+        document.getElementById("btcAmount").textContent = btcAmount;
+        const btcAddress = "{{ btc_address }}";
+        document.getElementById("walletLink").href = `bitcoin:${btcAddress}?amount=${btcAmount}`;
+
+        // Countdown timer logic
+        let timer = 7200; // 2 hours in seconds
+        const timerDisplay = document.getElementById('timer');
+
+        function updateTimer() {
+            const hours = Math.floor(timer / 3600);
+            const minutes = Math.floor((timer % 3600) / 60);
+            const seconds = timer % 60;
+            timerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (timer > 0) {
+                timer--;
+            }
+        }
+        setInterval(updateTimer, 1000);
+
+        // Copy BTC address to clipboard
+        function copyAddress() {
+            const copyText = document.getElementById("btcAddress");
+            copyText.select();
+            document.execCommand("copy");
+            alert("BTC Address copied to clipboard");
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2024 STS Software</p>
+    </footer>
+</body>
+</html>
